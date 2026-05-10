@@ -21,5 +21,13 @@
     "webpack": "^5.106.2",
     "webpack-cli": "^7.0.2",
     "webpack-dev-server": "^5.2.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MatheoM59/toDoList.git"
+  },
+  "bugs": {
+    "url": "https://github.com/MatheoM59/toDoList/issues"
+  },
+  "homepage": "https://github.com/MatheoM59/toDoList#readme"
 }
