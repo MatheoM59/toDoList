@@ -4,6 +4,7 @@ import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 export default {
   mode: 'production',
+  performance: false,
   entry: './src/index.js',
   output: {
     filename: 'main.js',
