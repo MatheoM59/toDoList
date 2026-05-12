@@ -3,6 +3,6 @@ import { display } from './display.js';
 import './styles.css';
 
 const logic = toDo();
-
-console.log(logic.projects[0].projectTitle);
 display(logic);
+
+window.logic = logic;

@@ -10,7 +10,7 @@ export const toDo = () => {
           dueDate: '2026-05-15',
           priority: 'high',
           notes: 'notes',
-          state: false,
+          state: 'No',
         },
       ],
     },
@@ -18,32 +18,46 @@ export const toDo = () => {
 
   const createProject = (projectTitle) => {
     const tasks = [];
-
-    const createTask = (
+    const project = { projectTitle, tasks };
+    projects.push(project);
+    saveData();
+    return project;
+  };
+  const createTask = (
+    project,
+    title,
+    description,
+    dueDate,
+    priority,
+    notes,
+    state
+  ) => {
+    const task = {
       title,
       description,
       dueDate,
       priority,
       notes,
-      state
-    ) => {
-      const task = {
-        title,
-        description,
-        dueDate,
-        priority,
-        notes,
-        state,
-      };
-      tasks.push(task);
-
-      return task;
+      state,
     };
-
-    const project = { projectTitle, tasks };
-    projects.push(project);
-    return project;
+    project.tasks.push(task);
+    saveData();
+    return task;
   };
 
-  return { createProject, projects };
+  const deleteTask = (project, i) => {
+    project.tasks.splice(i, 1);
+    saveData();
+  };
+
+  const saveData = () => {
+    localStorage.setItem('projects', JSON.stringify(projects));
+  };
+
+  const saved = localStorage.getItem('projects');
+  if (saved) {
+    const loaded = JSON.parse(saved);
+    projects.splice(0, projects.length, ...loaded);
+  }
+  return { createProject, projects, createTask, deleteTask, saveData };
 };

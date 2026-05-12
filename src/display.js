@@ -74,7 +74,7 @@ const renderMain = (logic, project) => {
     main.innerHTML = `
       <div class="subtitle"><h1>Task</h1></div>
       <div id='taskDivNoPro'>
-        <h2>Select a project</h2>
+        <h2>Select or create a project</h2>
       </div>
       <div id="projectsGrid">
         ${logic.projects
@@ -100,23 +100,67 @@ const renderMain = (logic, project) => {
       </div>
       <div id='taskForm'>
         <form>
-            <input type='text' id='title' placeholder='Task title'/>
-            <input type="date" id='date'/> 
-            <select id="priority">
+            <input type='text' id='titleInput' placeholder='Task title'/>
+            <input type='text' id='descriptionInput' placeholder='Description'/>
+            <input type='text' id='noteInput' placeholder='Notes'/>
+            <input type="date" id='dateInput'/> 
+            <select id="priorityInput">
                 <option value="low">Low</option>
                 <option value="medium">Medium</option>
                 <option value="high">High</option>
             </select>
-            <input type='submit' id='submitTask'
+            <input type='submit' id='submitTask'/>
         </form>
+       
       </div>
-      <div='taskList'>
-        <p>${project.tasks[0].title}
+      <div id="tasksList">
+      ${project.tasks
+        .map(
+          (task, i) => `
+        <div class='task' data-index='${i}'>
+          <div id='taskTop'>
+            <input type='checkbox' class='checkCompleted' ${task.state === 'Yes' ? 'checked' : ''}/>
+            <div class='taskTopInfo'>
+              <h3>${task.title}</h3>
+              <p>${task.dueDate}</p>
+            </div>
+            <button id='deleteBtn'>Delete</button>
+          </div>
+          <div class='taskContent'>
+            <div id='descriptionContainer'>
+              <p>${task.description}</p>
+            </div>
+            <div id='taskProp'>
+              <p>Priority: ${task.priority}</p>
+              <p>Notes : ${task.notes}</p>
+              <p>Completed : ${task.state}</p>
+            </div>
+          </div>
+        </div>
+      `
+        )
+        .join('')}
       </div>
-
-
-    </div>
   `;
+  setTimeout(() => taskCreator(logic, project), 0);
+  setTimeout(() => taskCompleted(logic, project), 0);
+  setTimeout(() => taskDeletor(logic, project), 0);
+};
+
+const descriptionCreator = (logic, project) => {
+  document
+    .getElementById('submitDescription')
+    .addEventListener('click', (e) => {
+      e.preventDefault();
+      const projectDescription = document
+        .getElementById('inputProjectDescription')
+        .value.trim();
+      if (!projectDescription) return;
+      project.description = projectDescription;
+      logic.saveData();
+      renderSideBar(logic);
+      renderMain(logic, project);
+    });
 };
 
 const renderDescriptionMain = (logic, project) => {
@@ -134,19 +178,61 @@ const renderDescriptionMain = (logic, project) => {
   return `<p>${project.description}</p>`;
 };
 
-const descriptionCreator = (logic, project) => {
-  document
-    .getElementById('submitDescription')
-    .addEventListener('click', (e) => {
-      e.preventDefault();
-      const projectDescription = document
-        .getElementById('inputProjectDescription')
-        .value.trim();
-      if (!projectDescription) return;
-      project.description = projectDescription;
-      renderSideBar(logic);
-      renderMain(logic, project);
-    });
+const taskCreator = (logic, project) => {
+  document.getElementById('submitTask').addEventListener('click', (e) => {
+    e.preventDefault();
+    console.log('boutonclicked');
+    const taskTitle = document.getElementById('titleInput').value.trim();
+    const taskDescription = document
+      .getElementById('descriptionInput')
+      .value.trim();
+    const taskNote = document.getElementById('noteInput').value.trim();
+    const taskDueDate = document.getElementById('dateInput').value.trim();
+    const taskPriority = document.getElementById('priorityInput').value.trim();
+    const taskState = 'No';
+
+    if (
+      !taskTitle ||
+      !taskDescription ||
+      !taskNote ||
+      !taskDueDate ||
+      !taskPriority ||
+      !taskState
+    )
+      return;
+
+    logic.createTask(
+      project,
+      taskTitle,
+      taskDescription,
+      taskDueDate,
+      taskPriority,
+      taskNote,
+      taskState
+    );
+    renderMain(logic, project);
+  });
+};
+
+const taskDeletor = (logic, project) => {
+  document.getElementById('tasksList').addEventListener('click', (e) => {
+    if (!e.target.matches('#deleteBtn')) return;
+    const taskDiv = e.target.closest('.task');
+    const i = taskDiv.dataset.index;
+    logic.deleteTask(project, i);
+    renderMain(logic, project);
+  });
+};
+
+const taskCompleted = (logic, project) => {
+  document.getElementById('tasksList').addEventListener('change', (e) => {
+    if (!e.target.matches('input[type="checkbox"]')) return;
+    const taskDiv = e.target.closest('.task');
+    const i = taskDiv.dataset.index;
+    project.tasks[i].state = e.target.checked ? 'Yes' : 'No';
+    logic.saveData();
+    renderMain(logic, project);
+  });
 };
 
 // ─── Navigation ──────────────────────────────────────────────────────────────
