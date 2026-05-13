@@ -56,14 +56,35 @@ body {
 #projects {
   display: flex;
   flex-direction: column;
-  gap: 2px;
 }
 
 .project {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
   padding: 7px 10px;
   border-radius: 5px;
   cursor: pointer;
   transition: background 0.1s;
+}
+
+#binBtn {
+  padding: 3px 8px;
+  background: transparent;
+  color: #ccc;
+  border: 1px solid #e8e8e8;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 0.72rem;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+#binBtn:hover {
+  background: #1a1a1a;
+  color: white;
+  border-color: #1a1a1a;
 }
 
 .project:hover {
@@ -262,7 +283,7 @@ input[type='submit']:hover {
   gap: 12px;
 }
 
-#taskTop {
+.taskTop {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -294,7 +315,7 @@ input[type='submit']:hover {
   margin-top: 2px;
 }
 
-#deleteBtn {
+.deleteBtn {
   padding: 5px 10px;
   background: transparent;
   color: #bbb;
@@ -307,7 +328,7 @@ input[type='submit']:hover {
   flex-shrink: 0;
 }
 
-#deleteBtn:hover {
+.deleteBtn:hover {
   background: #1a1a1a;
   color: white;
   border-color: #1a1a1a;
@@ -319,7 +340,7 @@ input[type='submit']:hover {
   gap: 16px;
 }
 
-#descriptionContainer {
+.descriptionContainer {
   flex: 1;
   border: 1px solid #e8e8e8;
   border-radius: 8px;
@@ -327,8 +348,50 @@ input[type='submit']:hover {
   padding-left: 10px;
 }
 
-#taskProp {
+.taskProp {
   min-width: 140px;
+}
+
+.priorityDot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  margin-right: 5px;
+  vertical-align: middle;
+}
+
+.priorityDot.low { background: #4caf50; }
+.priorityDot.medium { background: #ff9800; }
+.priorityDot.high { background: #f44336; }
+
+.editBtn {
+  padding: 5px 10px;
+  background: transparent;
+  color: #bbb;
+  border: 1px solid #e8e8e8;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.78rem;
+  transition: all 0.15s;
+  flex-shrink: 0;
+}
+
+.editBtn:hover {
+  background: #1a1a1a;
+  color: white;
+  border-color: #1a1a1a;
+}
+
+.editForm {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+}
+
+.editForm input[type='submit'] {
+  grid-column: 1 / -1;
 }
 
 .taskContent p {

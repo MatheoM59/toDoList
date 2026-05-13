@@ -50,6 +50,10 @@ export const toDo = () => {
     saveData();
   };
 
+  const deleteProject = (i) => {
+    projects.splice(i, 1);
+    saveData();
+  };
   const saveData = () => {
     localStorage.setItem('projects', JSON.stringify(projects));
   };
@@ -59,5 +63,12 @@ export const toDo = () => {
     const loaded = JSON.parse(saved);
     projects.splice(0, projects.length, ...loaded);
   }
-  return { createProject, projects, createTask, deleteTask, saveData };
+  return {
+    projects,
+    createProject,
+    createTask,
+    deleteTask,
+    saveData,
+    deleteProject,
+  };
 };
