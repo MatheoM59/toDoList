@@ -54,7 +54,7 @@ const renderSideBar = (logic) => {
 };
 
 const renderDescription = (project) => {
-  if (project.description === undefined) return '';
+  if (project.description === undefined) {return '';}
   return project.description;
 };
 
@@ -62,7 +62,7 @@ const projectCreator = (logic) => {
   document.getElementById('submit').addEventListener('click', (e) => {
     e.preventDefault();
     const projectTitle = document.getElementById('projectName').value.trim();
-    if (!projectTitle) return;
+    if (!projectTitle) {return;}
     const newProject = logic.createProject(projectTitle);
     renderSideBar(logic);
     renderMain(logic, newProject);
@@ -158,7 +158,7 @@ const renderDescriptionMain = (logic, project) => {
     return `
       <div class='inputDescription'>
         <form>
-          <input type="text" id='inputProjectDescription' placeholder="Write a short description" />
+          <input type="text" id='inputProjectDescription' maxlength="50"  placeholder="Write a short description" />
           <input type="submit" id="submitDescription" />
         </form>
       </div>
@@ -173,7 +173,7 @@ const descriptionCreator = (logic, project) => {
     const projectDescription = document
       .getElementById('inputProjectDescription')
       .value.trim();
-    if (!projectDescription) return;
+    if (!projectDescription) {return;}
     project.description = projectDescription;
     logic.saveData();
     renderSideBar(logic);
@@ -194,7 +194,7 @@ const taskCreator = (logic, project) => {
     const taskState = 'No';
 
     if (!taskTitle || !taskDescription || !taskNote || !taskDueDate || !taskPriority)
-      return;
+      {return;}
 
     logic.createTask(project, taskTitle, taskDescription, taskDueDate, taskPriority, taskNote, taskState);
     renderMain(logic, project);
@@ -203,7 +203,7 @@ const taskCreator = (logic, project) => {
 
 const taskDeletor = (logic, project) => {
   document.getElementById('tasksList').addEventListener('click', (e) => {
-    if (!e.target.matches('.deleteBtn')) return;
+    if (!e.target.matches('.deleteBtn')) {return;}
     const taskDiv = e.target.closest('.task');
     const i = taskDiv.dataset.index;
     logic.deleteTask(project, i);
@@ -213,7 +213,7 @@ const taskDeletor = (logic, project) => {
 
 const taskEditor = (logic, project) => {
   document.getElementById('tasksList').addEventListener('click', (e) => {
-    if (!e.target.matches('.editBtn')) return;
+    if (!e.target.matches('.editBtn')) {return;}
     const taskDiv = e.target.closest('.task');
     const i = taskDiv.dataset.index;
     const task = project.tasks[i];
@@ -246,7 +246,7 @@ const taskEditor = (logic, project) => {
 
 const taskCompleted = (logic, project) => {
   document.getElementById('tasksList').addEventListener('change', (e) => {
-    if (!e.target.matches('input[type="checkbox"]')) return;
+    if (!e.target.matches('input[type="checkbox"]')) {return;}
     const taskDiv = e.target.closest('.task');
     const i = taskDiv.dataset.index;
     project.tasks[i].state = e.target.checked ? 'Yes' : 'No';
@@ -259,21 +259,21 @@ const taskCompleted = (logic, project) => {
 
 const getProject = (logic) => {
   document.getElementById('sideProjects').addEventListener('click', (e) => {
-    if (e.target.matches('#binBtn')) return;
+    if (e.target.matches('#binBtn')) {return;}
     const projectDiv = e.target.closest('.project');
-    if (!projectDiv) return;
+    if (!projectDiv) {return;}
     renderMain(logic, logic.projects[projectDiv.dataset.index]);
   });
   document.getElementById('mainDiv').addEventListener('click', (e) => {
     const projectDiv = e.target.closest('.project');
-    if (!projectDiv) return;
+    if (!projectDiv) {return;}
     renderMain(logic, logic.projects[projectDiv.dataset.index]);
   });
 };
 
 const projectDeletor = (logic) => {
   document.getElementById('sideProjects').addEventListener('click', (e) => {
-    if (!e.target.matches('#binBtn')) return;
+    if (!e.target.matches('#binBtn')) {return;}
     e.stopPropagation();
     const projectDiv = e.target.closest('.project');
     const i = projectDiv.dataset.index;
